@@ -2,8 +2,8 @@ import React from 'react';
 
 const EcomContext = React.createContext();
 
-const EcomProvider = ({children}) => {
-  <EcomContext.Provider>{children}</EcomContext.Provider>;
+export const EcomProvider = ({children}) => {
+  return <EcomContext.Provider value={5}>{children}</EcomContext.Provider>;
 };
 
-export default EcomProvider;
+export default EcomContext;

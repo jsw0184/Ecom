@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {Image, SafeAreaView, Text, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert, Image, SafeAreaView, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Card} from 'react-native-paper';
 import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
+import EcomContext from '../../../context';
 import endPoint from '../../../services/endPoints';
 import useEcFetch from '../../../services/useEcFetch';
 import colors from '../../../utils/colors';
@@ -13,6 +14,7 @@ import useStyle from './styles';
 const Home = () => {
   const [topSliderImages, setTopSliderImages] = useState([]);
   const [categories, setCategories] = useState([]);
+  const valueOfContext = useContext(EcomContext);
 
   const {navigate} = useENavigation();
 
