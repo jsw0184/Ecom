@@ -1,9 +1,22 @@
-import React from 'react';
+import ContextReusable from './ContextReusable';
 
-const EcomContext = React.createContext();
-
-export const EcomProvider = ({children}) => {
-  return <EcomContext.Provider value={5}>{children}</EcomContext.Provider>;
+const categoryReducer = (state, action) => {
+  switch (action.type) {
+    case 'add_categories':
+      return [...action.payload];
+    default:
+      return state;
+  }
 };
 
-export default EcomContext;
+const setCategories = dispatch => {
+  return data => {
+    dispatch({type: 'add_categories', payload: data});
+  };
+};
+
+export const {Context, Provider} = ContextReusable(
+  categoryReducer,
+  {setCategories},
+  [],
+);
