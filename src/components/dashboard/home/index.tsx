@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Image, SafeAreaView, Text, View} from 'react-native';
+import {Image, SafeAreaView, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Card} from 'react-native-paper';
+import {connect} from 'react-redux';
 import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
-import EcomContext from '../../../context';
+import {getCategories} from '../../../actions';
+import {Context} from '../../../context';
 import endPoint from '../../../services/endPoints';
 import useEcFetch from '../../../services/useEcFetch';
 import colors from '../../../utils/colors';
@@ -11,10 +13,9 @@ import routes from '../../../utils/routes';
 import useENavigation from '../../../utils/useENavigation';
 import useStyle from './styles';
 
-const Home = () => {
+const Home = ({categories, getCategories}) => {
   const [topSliderImages, setTopSliderImages] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const valueOfContext = useContext(EcomContext);
+  const {state: allCategories, setCategories} = useContext(Context);
 
   const {navigate} = useENavigation();
 
@@ -24,7 +25,7 @@ const Home = () => {
 
   const fetchCategories = async () => {
     const getBanners = await ecFetch(endPoint.topBanner);
-    const getCategories = await ecFetch(endPoint.allCategories);
+    // const getCategories = await ecFetch(endPoint.allCategories);
     if (getBanners) {
       let images = [];
       getBanners.map(item => {
@@ -33,12 +34,17 @@ const Home = () => {
       setTopSliderImages(images);
     }
     // console.log('images--->', getCategories);
-    setCategories(getCategories);
+    // setCategories(getCategories);
   };
 
   useEffect(() => {
     fetchCategories();
+    getCategories();
   }, []);
+
+  useEffect(() => {
+    setCategories(categories);
+  }, [categories]);
 
   const _renderDotIndicator = () => {
     return (
@@ -162,11 +168,18 @@ const Home = () => {
         style={{flex: 1}}
         ListHeaderComponent={<NewPager />}
         ListHeaderComponentStyle={{flex: 1}}
-        data={categories}
+        data={allCategories}
         renderItem={newRenderItem}
         numColumns={2}
       />
     </SafeAreaView>
   );
 };
-export default Home;
+
+const getStateToProps = state => {
+  return {
+    categories: state.data.categories,
+  };
+};
+
+export default connect(getStateToProps, {getCategories})(Home);

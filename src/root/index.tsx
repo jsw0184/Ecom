@@ -5,6 +5,9 @@ import React from 'react';
 import {Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {Provider} from 'react-redux';
+import {applyMiddleware, legacy_createStore as createStore} from 'redux';
+import ReduxThunk from 'redux-thunk';
 import Cart from '../components/dashboard/cart';
 import Products from '../components/dashboard/categoryProducts';
 import Checkout from '../components/dashboard/checkout';
@@ -13,51 +16,55 @@ import Home from '../components/dashboard/home';
 import Settings from '../components/dashboard/settings';
 import Login from '../components/onboarding/login';
 import SignUp from '../components/onboarding/signup';
-import {EcomProvider} from '../context';
+import {Provider as EcomProvider} from '../context';
+import reducers from '../reducers';
 import colors from '../utils/colors';
 import routes from '../utils/routes';
+
 const Root = () => {
   const Stack = createStackNavigator();
 
   const checkUserLogIn = false;
 
   const queryClient = new QueryClient();
-
+  const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
   return (
-    <QueryClientProvider client={queryClient}>
-      <EcomProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName={
-              checkUserLogIn
-                ? routes.root.dashboard.NAME
-                : routes.root.onboarding.login.NAME
-            }
-            screenOptions={{headerShown: false}}>
-            <Stack.Screen
-              name={routes.root.onboarding.login.NAME}
-              component={Login}
-            />
-            <Stack.Screen
-              name={routes.root.onboarding.signup.NAME}
-              component={SignUp}
-            />
-            <Stack.Screen
-              name={routes.root.dashboard.NAME}
-              component={DashboarcNavigator}
-            />
-            <Stack.Screen
-              name={routes.root.dashboard.home.allProducts.NAME}
-              component={Products}
-            />
-            <Stack.Screen
-              name={routes.root.dashboard.checkout.NAME}
-              component={Checkout}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </EcomProvider>
-    </QueryClientProvider>
+    <EcomProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName={
+                checkUserLogIn
+                  ? routes.root.dashboard.NAME
+                  : routes.root.onboarding.login.NAME
+              }
+              screenOptions={{headerShown: false}}>
+              <Stack.Screen
+                name={routes.root.onboarding.login.NAME}
+                component={Login}
+              />
+              <Stack.Screen
+                name={routes.root.onboarding.signup.NAME}
+                component={SignUp}
+              />
+              <Stack.Screen
+                name={routes.root.dashboard.NAME}
+                component={DashboarcNavigator}
+              />
+              <Stack.Screen
+                name={routes.root.dashboard.home.allProducts.NAME}
+                component={Products}
+              />
+              <Stack.Screen
+                name={routes.root.dashboard.checkout.NAME}
+                component={Checkout}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </QueryClientProvider>
+      </Provider>
+    </EcomProvider>
   );
 };
 const Tab = createBottomTabNavigator();

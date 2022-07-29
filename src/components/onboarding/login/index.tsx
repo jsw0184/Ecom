@@ -1,14 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Image, Pressable, SafeAreaView, Text, View} from 'react-native';
 import {TextInput} from 'react-native-paper';
+import {connect} from 'react-redux';
+import {emailChanged, passwordChanged} from '../../../actions';
 import colors from '../../../utils/colors';
 import routes from '../../../utils/routes';
 import useStyles from './styles';
 
-const Login = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+const Login = ({email, emailChanged, password, passwordChanged}) => {
   const navigation = useNavigation();
   const styles = useStyles();
 
@@ -27,10 +27,9 @@ const Login = () => {
           source={require('./../../../assets/images/index.jpg')}
         />
         <TextInput
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          keyboardType="numeric"
-          label="Enter your phone number"
+          value={email}
+          onChangeText={emailChanged}
+          label="Enter your email"
           mode="outlined"
           dense
           activeOutlineColor={colors.primaryColor}
@@ -39,7 +38,7 @@ const Login = () => {
         />
         <TextInput
           value={password}
-          onChangeText={setPassword}
+          onChangeText={passwordChanged}
           label="Enter your password"
           // style={styles.inputTextPassword}
           style={{marginTop: 10}}
@@ -58,4 +57,12 @@ const Login = () => {
     </SafeAreaView>
   );
 };
-export default Login;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    email: state.auth.email,
+    password: state.auth.password,
+  };
+};
+
+export default connect(mapStateToProps, {emailChanged, passwordChanged})(Login);
