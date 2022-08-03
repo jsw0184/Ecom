@@ -1,3 +1,4 @@
+import {CategoriesModel} from '../models/categories';
 import ContextReusable from './ContextReusable';
 
 const categoryReducer = (state, action) => {
@@ -10,7 +11,7 @@ const categoryReducer = (state, action) => {
 };
 
 const setCategories = dispatch => {
-  return data => {
+  return (data: CategoriesModel[]) => {
     dispatch({type: 'add_categories', payload: data});
   };
 };
