@@ -1,16 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Image, SafeAreaView, Text, View} from 'react-native';
+import {Image, SafeAreaView, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {Card} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
 import {getCategories} from '../../../actions';
 import {Context} from '../../../context';
+import {CategoriesModel} from '../../../models/categories';
 import endPoint from '../../../services/endPoints';
 import useEcFetch from '../../../services/useEcFetch';
 import colors from '../../../utils/colors';
 import routes from '../../../utils/routes';
 import useENavigation from '../../../utils/useENavigation';
+import MainCategory from './components/mainCategory';
 import useStyle from './styles';
 
 const Home = ({categories, getCategories}) => {
@@ -71,47 +72,10 @@ const Home = ({categories, getCategories}) => {
     </View>
   );
 
-  const moveToProductsScreen = item => {
-    navigate(routes.root.dashboard.home.allProducts.NAME, {
-      item,
-    });
-  };
-
-  const newRenderItem: React.FC<{item; index: number}> = ({item, index}) => (
-    <Card
-      elevation={10}
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        marginHorizontal: 10,
-        marginVertical: 7,
-        justifyContent: 'center',
-        borderBottomColor: 'grey',
-        paddingBottom: 10,
-        paddingTop: 10,
-      }}
-      onPress={() => moveToProductsScreen(item)}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image
-          style={{height: 105, width: 105, borderRadius: 10}}
-          source={{uri: endPoint.baseUrlForImages + item.catimage}}></Image>
-
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 15,
-            textAlign: 'center',
-            marginTop: 8,
-          }}>
-          {item.name}
-        </Text>
-      </View>
-    </Card>
-  );
+  const newRenderItem: React.FC<{item: CategoriesModel; index: number}> = ({
+    item,
+    index,
+  }) => <MainCategory item={item} index={index} />;
 
   return (
     <SafeAreaView style={styles.parent}>
