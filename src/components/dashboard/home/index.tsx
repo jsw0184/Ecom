@@ -25,7 +25,7 @@ const Home = ({categories, getCategories}) => {
 
   const fetchCategories = async () => {
     const getBanners = await ecFetch(endPoint.topBanner);
-    // const getCategories = await ecFetch(endPoint.allCategories);
+
     if (getBanners) {
       let images = [];
       getBanners.map(item => {
@@ -33,8 +33,6 @@ const Home = ({categories, getCategories}) => {
       });
       setTopSliderImages(images);
     }
-    // console.log('images--->', getCategories);
-    // setCategories(getCategories);
   };
 
   useEffect(() => {
@@ -56,32 +54,6 @@ const Home = ({categories, getCategories}) => {
     );
   };
 
-  const Pager = () => (
-    <View style={styles.firstSubParent}>
-      <View style={styles.SubParentChildOne}></View>
-      <View style={styles.SubParentChildTwo}></View>
-      <View style={styles.absoluteViewPager}>
-        <View style={styles.slider}>
-          <IndicatorViewPager
-            style={{flex: 1}}
-            indicator={_renderDotIndicator()}
-            autoPlayEnable>
-            {topSliderImages.map((item, index) => {
-              return (
-                <View style={{flex: 1}} key={index} collapsable={false}>
-                  <Image
-                    style={{flex: 1, borderRadius: 10}}
-                    source={{uri: item}}
-                  />
-                </View>
-              );
-            })}
-          </IndicatorViewPager>
-        </View>
-      </View>
-    </View>
-  );
-
   const NewPager = () => (
     <View style={{flex: 1, height: 200, margin: 10}}>
       <IndicatorViewPager
@@ -99,34 +71,13 @@ const Home = ({categories, getCategories}) => {
     </View>
   );
 
-  const renderItem: React.FC<{item; index}> = ({item, index}) => (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: 10,
-        marginVertical: 7,
-        borderBottomWidth: 1,
-        borderBottomColor: 'grey',
-        paddingBottom: 10,
-      }}>
-      <Image
-        style={{height: 80, width: 80, borderRadius: 10}}
-        source={{uri: endPoint.baseUrlForImages + item.catimage}}></Image>
-      <Text style={{marginStart: 10, color: 'black', fontSize: 18}}>
-        {item.name}
-      </Text>
-    </View>
-  );
-
   const moveToProductsScreen = item => {
     navigate(routes.root.dashboard.home.allProducts.NAME, {
       item,
     });
   };
 
-  const newRenderItem: React.FC<{item; index}> = ({item, index}) => (
+  const newRenderItem: React.FC<{item; index: number}> = ({item, index}) => (
     <Card
       elevation={10}
       style={{
