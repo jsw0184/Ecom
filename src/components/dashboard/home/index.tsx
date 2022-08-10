@@ -8,17 +8,12 @@ import {Context} from '../../../context';
 import {CategoriesModel} from '../../../models/categories';
 import endPoint from '../../../services/endPoints';
 import useEcFetch from '../../../services/useEcFetch';
-import colors from '../../../utils/colors';
-import routes from '../../../utils/routes';
-import useENavigation from '../../../utils/useENavigation';
 import MainCategory from './components/mainCategory';
 import useStyle from './styles';
 
 const Home = ({categories, getCategories}) => {
-  const [topSliderImages, setTopSliderImages] = useState([]);
+  const [topSliderImages, setTopSliderImages] = useState<string[]>([]);
   const {state: allCategories, setCategories} = useContext(Context);
-
-  const {navigate} = useENavigation();
 
   const styles = useStyle();
 
@@ -28,7 +23,7 @@ const Home = ({categories, getCategories}) => {
     const getBanners = await ecFetch(endPoint.topBanner);
 
     if (getBanners) {
-      let images = [];
+      let images: string[] = [];
       getBanners.map(item => {
         images = images.concat(endPoint.baseUrlForImages + item.filename);
       });
@@ -48,23 +43,23 @@ const Home = ({categories, getCategories}) => {
   const _renderDotIndicator = () => {
     return (
       <PagerDotIndicator
-        pageCount={3}
-        dotStyle={{backgroundColor: colors.backgroundColor}}
-        selectedDotStyle={{backgroundColor: colors.primaryColor}}
+        pageCount={topSliderImages.length}
+        dotStyle={styles.dotStyle}
+        selectedDotStyle={styles.selectedDotStyle}
       />
     );
   };
 
   const NewPager = () => (
-    <View style={{flex: 1, height: 200, margin: 10}}>
+    <View style={styles.pagerParent}>
       <IndicatorViewPager
-        style={{flex: 1}}
+        style={styles.indicatorPager}
         indicator={_renderDotIndicator()}
         autoPlayEnable>
         {topSliderImages.map((item, index) => {
           return (
-            <View style={{flex: 1}} key={index} collapsable={false}>
-              <Image style={{flex: 1, borderRadius: 10}} source={{uri: item}} />
+            <View style={styles.indicatorPager} key={index} collapsable={false}>
+              <Image style={styles.pagerImage} source={{uri: item}} />
             </View>
           );
         })}
@@ -82,7 +77,7 @@ const Home = ({categories, getCategories}) => {
       <FlatList
         style={{flex: 1}}
         ListHeaderComponent={<NewPager />}
-        ListHeaderComponentStyle={{flex: 1}}
+        ListHeaderComponentStyle={styles.listHeader}
         data={allCategories}
         renderItem={newRenderItem}
         numColumns={2}

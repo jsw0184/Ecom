@@ -6,33 +6,42 @@ const useStyle = () => {
     parent: {
       flex: 1,
     },
-    firstSubParent: {
-      flex: 4,
+    listHeader: {
+      flex: 1,
     },
-    SubParentChildOne: {
-      flex: 2,
+    pagerParent: {flex: 1, height: 200, margin: 10},
+    indicatorPager: {flex: 1},
+    pagerImage: {flex: 1, borderRadius: 10},
+    dotStyle: {backgroundColor: colors.backgroundColor},
+    selectedDotStyle: {
       backgroundColor: colors.primaryColor,
     },
-    SubParentChildTwo: {
-      flex: 2,
-      backgroundColor: colors.backgroundColor,
-    },
-    secondSubParent: {
-      flex: 6,
-      backgroundColor: colors.backgroundColor,
-    },
-    absoluteViewPager: {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-    },
-    slider: {
-      flex: 1,
-
-      marginLeft: 20,
-      marginRight: 20,
-      marginVertical: 20,
-    },
+    // firstSubParent: {
+    //   flex: 4,
+    // },
+    // SubParentChildOne: {
+    //   flex: 2,
+    //   backgroundColor: colors.primaryColor,
+    // },
+    // SubParentChildTwo: {
+    //   flex: 2,
+    //   backgroundColor: colors.backgroundColor,
+    // },
+    // secondSubParent: {
+    //   flex: 6,
+    //   backgroundColor: colors.backgroundColor,
+    // },
+    // absoluteViewPager: {
+    //   position: 'absolute',
+    //   width: '100%',
+    //   height: '100%',
+    // },
+    // slider: {
+    //   flex: 1,
+    //   marginLeft: 20,
+    //   marginRight: 20,
+    //   marginVertical: 20,
+    // },
   });
 };
 export default useStyle;
